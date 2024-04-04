@@ -1,7 +1,8 @@
 const url = "https://pixel-api.codenestedu.fr"
 const canvas = document.getElementById("canvas")
 
-const init_canvas = () => {
+const refresh_canvas = () => {
+    canvas.innerHTML = "" // quick way to empty out canvas div
     const req = new Request(url+"/tableau")
     fetch(req).then(response => {return response.json()})
     .then(r => {
@@ -11,6 +12,10 @@ const init_canvas = () => {
             for(let j=0; j<100; j++){
                 let pixel = document.createElement("div")
                 pixel.className = "pixel"
+                pixel.id = "pixel" + i + "," + j
+                pixel.onclick = () => {
+                    console.log(pixel_to_coords(pixel.id))
+                }
                 pixel.style.backgroundColor = r[i][j]
                 row.appendChild(pixel)
             }
@@ -18,4 +23,9 @@ const init_canvas = () => {
         }
     })
 }
-init_canvas()
+
+const pixel_to_coords = (pixel_id) => {
+    return pixel_id.substring(5).split(",")
+}
+
+refresh_canvas()
