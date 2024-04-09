@@ -5,23 +5,28 @@ const refresh_canvas = () => {
     canvas.innerHTML = "" // quick way to empty out canvas div
     const req = new Request(url+"/tableau")
     fetch(req).then(response => {return response.json()})
-    .then(r => {
-        for(let i=0; i<100;i++){
-            let row = document.createElement("div")
-            row.className = "row"
-            for(let j=0; j<100; j++){
-                let pixel = document.createElement("div")
-                pixel.className = "pixel"
-                pixel.id = "pixel" + i + "," + j
-                pixel.onclick = () => {
-                    console.log(pixel_to_coords(pixel.id))
-                }
-                pixel.style.backgroundColor = r[i][j]
-                row.appendChild(pixel)
-            }
-            canvas.appendChild(row)
-        }
+    .then(canvasMatrix =>{
+        canvasMatrix.map((row, rowIndex) => {
+            let rowElem = document.createElement("div")
+            rowElem.className = "row"
+            row.map((pixelColor, colIndex) => {
+                let pixelElem = document.createElement("div")
+                pixelElem.className = "pixel"
+                pixelElem.id = "pixel" + rowIndex + "," + colIndex
+                pixelElem.style.backgroundColor = pixelColor
+                pixelElem.addEventListener("click",() => {
+                    [rowIndex,colIndex] = pixel_to_coords(pixelElem.id)
+                    pixel_click(rowIndex,colIndex)
+                })
+                rowElem.appendChild(pixelElem)
+            })
+            canvas.appendChild(rowElem);
+        })
     })
+}
+
+const pixel_click = (rowIndex,colIndex) => {
+    console.log(rowIndex,colIndex)
 }
 
 const pixel_to_coords = (pixel_id) => {
