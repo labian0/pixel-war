@@ -48,7 +48,8 @@ main{
     flex-direction: row;
 }
 
-main>aside{
+main>*{
+    flex:1;
 
 }
 

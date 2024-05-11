@@ -1,7 +1,6 @@
 const url = "https://pixel-api.codenestedu.fr"
 
 const getCanvas = async () => {
-    canvas.innerHTML = "" // quick way to empty out canvas div
     const req = new Request(url+"/tableau")
     return fetch(req).then(response => {return response.json()})
 }
