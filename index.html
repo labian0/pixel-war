@@ -27,15 +27,19 @@
             </section>
             <aside id="form-wrapper">
                 <span class="form-label">Identification obligatoire</span>
-                <input type="text">
+                <input type="password" name="uid">
                 <span class="form-label">Choisir une couleur</span>
-                <input type="text">
+                <input type="color" name="couleur">
                 <span class="form-label">Temps d'attente avant modification</span>
-                <input type="text">
+                <p id="cooldown"></p>
                 <span class="form-label">Choisir votre équipe</span>
-                <input type="text">
-                <span class="form-label">Dernière information donnée par le serveur</span>
-                <input type="text">
+                <fieldset>
+                    <legend>Choisie une équipe</legend>
+                    <input type="button" name="equipe" value="Équipe 1">
+                    <input type="button" name="equipe" value="Équipe 2">
+                    <input type="button" name="equipe" value="Équipe 3">
+                    <input type="button" name="equipe" value="Équipe 4">
+                </fieldset>
             </aside>
         </main>
     </div>
