@@ -1,10 +1,15 @@
-import { getCanvas, placePixel, selectTeam } from "./api.js"
+import { getCanvas, placePixel, selectTeam, getTeamInfo } from "./api.js"
 
 const canvas = document.getElementById("canvas")
 const serverInfo = document.getElementById("server_info")
+const equipeInfo = document.getElementById("equipe")
 
 const updateServerInfo = (message) => {
     serverInfo.textContent = message
+}
+
+const updateEquipeInfo = (message) => {
+    equipeInfo.textContent = message
 }
 
 const getUID = () => {
@@ -53,6 +58,22 @@ const refreshCanvas = async () => {
     })
 }
 
+const refreshTeam = async () => {
+    let res = await getTeamInfo(getUID())
+    let message
+    if(res.code == 200){
+        let equipeNum = res.data.equipe
+        if (equipeNum == 0){
+            message = "Vous n'avez pas d'équipe"
+        }else{
+            message = "Vous êtes dans l'équipe " + equipeNum
+        }
+    }else{
+        message = "UID inconnu"
+    }
+    updateEquipeInfo(message)
+}
+
 let team_buttons = [].slice.call(document.getElementsByClassName("team-select-btn"));
 team_buttons.map((btn,teamIndex)=>{
     btn.addEventListener("click",async ()=>{
@@ -63,3 +84,4 @@ team_buttons.map((btn,teamIndex)=>{
 
 await initCanvas()
 setInterval(refreshCanvas, 3000)
+setInterval(refreshTeam, 3000)

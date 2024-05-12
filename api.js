@@ -42,8 +42,19 @@ const selectTeam = async (uid,teamNumber) =>{
     });
 }
 
+const getTeamInfo = async (uid) => {
+    const req = new Request(url+"/equipe-utilisateur?uid=" + uid)
+    return await fetch(req).then(async (response)=>{
+        return {
+            data: await response.json(),
+            code: response.status
+        }
+    })
+}
+
 export{
     getCanvas,
     placePixel,
-    selectTeam
+    selectTeam,
+    getTeamInfo
 }
