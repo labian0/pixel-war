@@ -1,6 +1,20 @@
-import { getCanvas, pixelClick } from "./api.js"
+import { getCanvas, placePixel } from "./api.js"
 
 const canvas = document.getElementById("canvas")
+
+const pixelClick = async (pixelElem) => {
+    let [rowIndex,colIndex] = pixelToCoords(pixelElem.id)
+    let res = await placePixel(document.getElementById("couleur").value,
+    document.getElementById("uid").value,
+    rowIndex,
+    colIndex
+    )
+    console.log(res)
+}
+
+const pixelToCoords = (pixel_id) => {
+    return pixel_id.substring(5).split(",")
+}
 
 const initCanvas = async () => {
     for (let rowIndex = 0; rowIndex < 100; rowIndex++) {

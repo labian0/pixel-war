@@ -5,16 +5,27 @@ const getCanvas = async () => {
     return fetch(req).then(response => {return response.json()})
 }
 
-const pixelClick = (pixelElem) => {
-    let [rowIndex,colIndex] = pixelToCoords(pixelElem.id)
-    console.log(rowIndex,colIndex)
-}
 
-const pixelToCoords = (pixel_id) => {
-    return pixel_id.substring(5).split(",")
+const placePixel = async (color, uid, row, col) => {
+    const req = new Request(url+"/modifier-case")
+    return await fetch(req, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            color: color,
+            uid: uid,
+            row: row,
+            col: col
+        })
+    }).then(async (response)=>{
+        return {
+            data: await response.json(),
+            code: response.status
+        }
+    });
 }
 
 export{
     getCanvas,
-    pixelClick
+    placePixel
 }
