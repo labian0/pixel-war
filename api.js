@@ -25,7 +25,25 @@ const placePixel = async (color, uid, row, col) => {
     });
 }
 
+const selectTeam = async (uid,teamNumber) =>{
+    const req = new Request(url+"/choisir-equipe")
+    return await fetch(req, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            uid: uid,
+            nouvelleEquipe: teamNumber
+        })
+    }).then(async (response)=>{
+        return {
+            data: await response.json(),
+            code: response.status
+        }
+    });
+}
+
 export{
     getCanvas,
-    placePixel
+    placePixel,
+    selectTeam
 }

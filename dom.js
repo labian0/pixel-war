@@ -1,15 +1,24 @@
-import { getCanvas, placePixel } from "./api.js"
+import { getCanvas, placePixel, selectTeam } from "./api.js"
 
 const canvas = document.getElementById("canvas")
+const serverInfo = document.getElementById("server_info")
+
+const updateServerInfo = (message) => {
+    serverInfo.textContent = message
+}
+
+const getUID = () => {
+    return document.getElementById("uid").value
+}
 
 const pixelClick = async (pixelElem) => {
     let [rowIndex,colIndex] = pixelToCoords(pixelElem.id)
     let res = await placePixel(document.getElementById("couleur").value,
-    document.getElementById("uid").value,
+    getUID(),
     rowIndex,
     colIndex
     )
-    console.log(res)
+    updateServerInfo(res.data.msg)
 }
 
 const pixelToCoords = (pixel_id) => {
@@ -43,6 +52,14 @@ const refreshCanvas = async () => {
         })
     })
 }
+
+let team_buttons = [].slice.call(document.getElementsByClassName("team-select-btn"));
+team_buttons.map((btn,teamIndex)=>{
+    btn.addEventListener("click",async ()=>{
+        let res = await selectTeam(getUID(),teamIndex+1)
+        updateServerInfo(res.data.msg)
+    })
+})
 
 await initCanvas()
 setInterval(refreshCanvas, 3000)
