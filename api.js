@@ -52,9 +52,20 @@ const getTeamInfo = async (uid) => {
     })
 }
 
+const getCooldownInfo = async (uid) => {
+    const req = new Request(url+"/temps-attente?uid=" + uid)
+    return await fetch(req).then(async (response)=>{
+        return {
+            data: await response.json(),
+            code: response.status
+        }
+    })
+}
+
 export{
     getCanvas,
     placePixel,
     selectTeam,
-    getTeamInfo
+    getTeamInfo,
+    getCooldownInfo
 }

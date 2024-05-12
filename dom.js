@@ -1,8 +1,9 @@
-import { getCanvas, placePixel, selectTeam, getTeamInfo } from "./api.js"
+import { getCanvas, placePixel, selectTeam, getTeamInfo, getCooldownInfo } from "./api.js"
 
 const canvas = document.getElementById("canvas")
 const serverInfo = document.getElementById("server_info")
 const equipeInfo = document.getElementById("equipe")
+const cooldownInfo = document.getElementById("cooldown")
 
 const updateServerInfo = (message) => {
     serverInfo.textContent = message
@@ -10,6 +11,10 @@ const updateServerInfo = (message) => {
 
 const updateEquipeInfo = (message) => {
     equipeInfo.textContent = message
+}
+
+const updateCooldownInfo = (message) => {
+    cooldownInfo.textContent = message
 }
 
 const getUID = () => {
@@ -74,6 +79,22 @@ const refreshTeam = async () => {
     updateEquipeInfo(message)
 }
 
+const refreshCooldown = async () => {
+    let res = await getCooldownInfo(getUID());
+    let message
+    if(res.code == 200){
+        const cooldown = res.data.tempsAttente
+        if(cooldown == 0){
+            message = "Vous pouvez poser un pixel"
+        }else{
+            message = `Vous pourrez poser un pixel dans ${cooldown/1000} secondes`
+        }
+    }else{
+        message = "UID inconnu"
+    }
+    updateCooldownInfo(message)
+}
+
 let team_buttons = [].slice.call(document.getElementsByClassName("team-select-btn"));
 team_buttons.map((btn,teamIndex)=>{
     btn.addEventListener("click",async ()=>{
@@ -85,3 +106,4 @@ team_buttons.map((btn,teamIndex)=>{
 await initCanvas()
 setInterval(refreshCanvas, 3000)
 setInterval(refreshTeam, 3000)
+setInterval(refreshCooldown, 1000)
